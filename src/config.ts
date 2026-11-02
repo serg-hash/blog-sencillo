@@ -47,7 +47,11 @@ export const site = {
    */
   url: "https://example.com",
 
-  /** Idioma por defecto de la UI (la otra versión vive en /en/). */
+  /**
+   * Idioma por defecto de la UI en `/`.
+   * El otro idioma vive en `/en/` (si el default es `es`) o `/es/` (si es `en`).
+   * Default UI language on `/`. The other locale lives at `/en/` or `/es/`.
+   */
   defaultLocale: "es" as Locale,
 
   /** Muestra el conmutador ES / EN. Ponlo a false para un solo idioma. */

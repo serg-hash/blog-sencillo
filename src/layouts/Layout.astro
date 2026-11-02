@@ -92,7 +92,7 @@ const jsonLd =
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="es" href={alternateEs} />
     <link rel="alternate" hreflang="en" href={alternateEn} />
-    <link rel="alternate" hreflang="x-default" href={alternateEs} />
+    <link rel="alternate" hreflang="x-default" href={site.defaultLocale === "en" ? alternateEn : alternateEs} />
     <link rel="alternate" type="application/rss+xml" title={site.name} href={`${base}/rss.xml`} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

@@ -1,7 +1,8 @@
-import type { Locale } from "../config";
+import { site, type Locale } from "../config";
 
 export function homePath(locale: Locale): string {
-  return locale === "es" ? "/" : "/en/";
+  if (locale === site.defaultLocale) return "/";
+  return locale === "es" ? "/es/" : "/en/";
 }
 
 export function postPath(locale: Locale, slug: string): string {
@@ -34,8 +35,9 @@ const swaps: Array<{ from: RegExp; es: (m: RegExpMatchArray) => string; en: (m: 
   { from: /^\/etiquetas\/?$/, es: () => "/etiquetas", en: () => "/en/tags" },
   { from: /^\/en\/page\/([^/]+)\/?$/, es: (m) => `/pagina/${m[1]}`, en: (m) => `/en/page/${m[1]}` },
   { from: /^\/pagina\/([^/]+)\/?$/, es: (m) => `/pagina/${m[1]}`, en: (m) => `/en/page/${m[1]}` },
-  { from: /^\/en\/?$/, es: () => "/", en: () => "/en/" },
-  { from: /^\/?$/, es: () => "/", en: () => "/en/" },
+  { from: /^\/en\/?$/, es: () => homePath("es"), en: () => homePath("en") },
+  { from: /^\/es\/?$/, es: () => homePath("es"), en: () => homePath("en") },
+  { from: /^\/?$/, es: () => homePath("es"), en: () => homePath("en") },
 ];
 
 /** Equivalente de una ruta en el otro idioma de la UI. */
@@ -45,7 +47,7 @@ export function swapLocalePath(pathname: string, target: Locale): string {
     const match = path.match(rule.from);
     if (match) return rule[target](match);
   }
-  return target === "en" ? "/en/" : "/";
+  return homePath(target);
 }
 
 export function absoluteUrl(base: string, path: string): string {

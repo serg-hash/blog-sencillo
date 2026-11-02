@@ -2,8 +2,10 @@
 import Layout from "../layouts/Layout.astro";
 import { localize, site } from "../config";
 import { t } from "../i18n";
+import { homePath } from "../lib/paths";
 
-const locale = "es" as const;
+const locale = site.defaultLocale;
+const other = locale === "es" ? "en" : "es";
 ---
 
 <Layout
@@ -11,12 +13,12 @@ const locale = "es" as const;
   title={`404 — ${site.name}`}
   description={localize(site.description, locale)}
   path="/404"
-  alternatePath="/en/"
+  alternatePath={homePath(other)}
   noindex
 >
   <main class="not-found" id="contenido">
     <h1>404</h1>
     <p>{t(locale, "notFound")}</p>
-    <a href="/">{t(locale, "backHome")}</a>
+    <a href={homePath(locale)}>{t(locale, "backHome")}</a>
   </main>
 </Layout>

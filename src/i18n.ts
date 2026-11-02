@@ -1,4 +1,5 @@
 import type { Locale } from "./config";
+import { homePath } from "./lib/paths";
 
 export const ui = {
   es: {
@@ -86,5 +87,5 @@ export function t(locale: Locale, key: UiKey): string {
 }
 
 export function pathFor(locale: Locale): string {
-  return locale === "es" ? "/" : "/en/";
+  return homePath(locale);
 }
