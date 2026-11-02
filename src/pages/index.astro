@@ -1,0 +1,9 @@
+---
+import HomePage from "../components/HomePage.astro";
+import { getPublishedPosts, paginatePosts } from "../lib/posts";
+
+const all = await getPublishedPosts();
+const { posts, current, lastPage } = paginatePosts(all, 1);
+---
+
+<HomePage locale="es" posts={posts} current={current} lastPage={lastPage} />

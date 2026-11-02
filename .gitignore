@@ -1,0 +1,25 @@
+# Dependencias y build
+node_modules/
+dist/
+.astro/
+
+# Entorno (este proyecto no necesita secretos)
+.env
+.env.*
+!.env.example
+
+# Sistema e IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Docker
+*.log

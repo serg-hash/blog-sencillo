@@ -1,0 +1,78 @@
+---
+import { site, type Locale } from "../config";
+import { t } from "../i18n";
+import { iconSvg } from "../icons";
+import { homePath, tagsIndexPath, rssPath, swapLocalePath } from "../lib/paths";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const other: Locale = locale === "es" ? "en" : "es";
+const otherHref = swapLocalePath(Astro.url.pathname, other);
+const tagsHref = tagsIndexPath(locale);
+const onTags = Astro.url.pathname.replace(/\/+$/, "").endsWith(locale === "es" ? "etiquetas" : "tags");
+---
+
+<header class="site-header">
+  <a class="brand" href={homePath(locale)}>
+    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+      <rect width="32" height="32" rx="8" fill="currentColor" opacity="0.15"></rect>
+      <path d="M9 5h14v22l-7-4.2L9 27V5z" fill="currentColor"></path>
+    </svg>
+    <span class="brand-name">{site.name}</span>
+  </a>
+  <div class="header-tools">
+    <nav class="nav-links" aria-label={t(locale, "posts")}>
+      <a href={homePath(locale)}>{t(locale, "home")}</a>
+      <a href={tagsHref} aria-current={onTags ? "page" : undefined}>{t(locale, "tags")}</a>
+    </nav>
+    <a class="icon-btn" href={rssPath()} aria-label={t(locale, "rss")} title={t(locale, "rss")}>
+      <Fragment set:html={iconSvg("rss")} />
+    </a>
+    {
+      site.showLanguageSwitch && (
+        <nav class="lang" aria-label={t(locale, "lang")}>
+          <a href={locale === "es" ? Astro.url.pathname : otherHref} lang="es" aria-current={locale === "es" ? "page" : undefined}>
+            ES
+          </a>
+          <a href={locale === "en" ? Astro.url.pathname : otherHref} lang="en" aria-current={locale === "en" ? "page" : undefined}>
+            EN
+          </a>
+        </nav>
+      )
+    }
+    <button
+      type="button"
+      class="icon-btn"
+      data-theme-toggle
+      data-label-light={t(locale, "themeLight")}
+      data-label-dark={t(locale, "themeDark")}
+      aria-label={t(locale, "themeDark")}
+      aria-pressed="true"
+      title={t(locale, "theme")}
+    >
+      <span class="theme-icon theme-icon-dark">
+        <Fragment set:html={iconSvg("moon")} />
+      </span>
+      <span class="theme-icon theme-icon-light">
+        <Fragment set:html={iconSvg("sun")} />
+      </span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .theme-icon-light {
+    display: none;
+  }
+
+  :global(html[data-theme="light"]) .theme-icon-dark {
+    display: none;
+  }
+
+  :global(html[data-theme="light"]) .theme-icon-light {
+    display: inline-flex;
+  }
+</style>
