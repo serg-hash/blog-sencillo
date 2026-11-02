@@ -1,0 +1,56 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import PostCard from "../../../components/PostCard.astro";
+import { site, type Locale } from "../../../config";
+import { t } from "../../../i18n";
+import { getPublishedPosts, postsForTag, uniqueTags } from "../../../lib/posts";
+import { tagPath, swapLocalePath } from "../../../lib/paths";
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return uniqueTags(posts).map(({ slug, tag }) => ({
+    params: { tag: slug },
+    props: { label: tag },
+  }));
+}
+
+interface Props {
+  label: string;
+}
+
+const locale: Locale = "en";
+const slug = Astro.params.tag!;
+const { label } = Astro.props;
+const posts = postsForTag(await getPublishedPosts(), slug);
+const path = tagPath(locale, slug);
+const countLabel = posts.length === 1 ? t(locale, "tagCountOne") : t(locale, "tagCount");
+---
+
+<Layout
+  locale={locale}
+  title={`${label} — ${site.name}`}
+  description={`${t(locale, "postsWithTag")} ${label}`}
+  path={path}
+  alternatePath={swapLocalePath(path, "es")}
+>
+  <main id="contenido">
+    <section class="hero">
+      <p class="eyebrow">{t(locale, "tags")}</p>
+      <h1>{label}</h1>
+      <p class="page-desc">
+        {posts.length} {countLabel}
+      </p>
+    </section>
+    {
+      posts.length === 0 ? (
+        <p class="empty">{t(locale, "emptyTag")}</p>
+      ) : (
+        <section class="feed">
+          {posts.map((post) => (
+            <PostCard locale={locale} post={post} />
+          ))}
+        </section>
+      )
+    }
+  </main>
+</Layout>

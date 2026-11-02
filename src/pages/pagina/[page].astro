@@ -1,0 +1,18 @@
+---
+import HomePage from "../../components/HomePage.astro";
+import { getPublishedPosts, paginatePosts } from "../../lib/posts";
+
+export async function getStaticPaths() {
+  const all = await getPublishedPosts();
+  const { lastPage } = paginatePosts(all, 1);
+  return Array.from({ length: lastPage }, (_, index) => index + 1)
+    .filter((page) => page > 1)
+    .map((page) => ({ params: { page: String(page) } }));
+}
+
+const page = Number(Astro.params.page);
+const all = await getPublishedPosts();
+const { posts, current, lastPage } = paginatePosts(all, page);
+---
+
+<HomePage locale="es" posts={posts} current={current} lastPage={lastPage} />

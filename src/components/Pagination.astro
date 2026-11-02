@@ -1,0 +1,36 @@
+---
+import type { Locale } from "../config";
+import { t } from "../i18n";
+import { pagePath } from "../lib/paths";
+
+interface Props {
+  locale: Locale;
+  current: number;
+  lastPage: number;
+}
+
+const { locale, current, lastPage } = Astro.props;
+const pages = Array.from({ length: lastPage }, (_, index) => index + 1);
+---
+
+{
+  lastPage > 1 && (
+    <nav class="pagination" aria-label={t(locale, "pagination")}>
+      {current > 1 ? (
+        <a href={pagePath(locale, current - 1)}>{t(locale, "previous")}</a>
+      ) : (
+        <span aria-disabled="true">{t(locale, "previous")}</span>
+      )}
+      {pages.map((page) => (
+        <a href={pagePath(locale, page)} aria-current={page === current ? "page" : undefined} aria-label={`${t(locale, "page")} ${page}`}>
+          {page}
+        </a>
+      ))}
+      {current < lastPage ? (
+        <a href={pagePath(locale, current + 1)}>{t(locale, "next")}</a>
+      ) : (
+        <span aria-disabled="true">{t(locale, "next")}</span>
+      )}
+    </nav>
+  )
+}

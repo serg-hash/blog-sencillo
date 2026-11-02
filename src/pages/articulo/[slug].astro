@@ -1,0 +1,90 @@
+---
+import { render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { site, type Locale } from "../../config";
+import { t } from "../../i18n";
+import { formatDate, slugifyTag } from "../../lib/format";
+import { postPath, tagPath, swapLocalePath } from "../../lib/paths";
+import { readingMinutes } from "../../lib/reading-time";
+import { getPublishedPosts, relatedPosts, type Post } from "../../lib/posts";
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post, posts },
+  }));
+}
+
+interface Props {
+  post: Post;
+  posts: Post[];
+}
+
+const locale: Locale = "es";
+const { post, posts } = Astro.props;
+const { Content } = await render(post);
+const minutes = readingMinutes(post.body);
+const related = relatedPosts(posts, post);
+const path = postPath(locale, post.id);
+---
+
+<Layout
+  locale={locale}
+  title={`${post.data.title} — ${site.name}`}
+  description={post.data.description}
+  path={path}
+  alternatePath={swapLocalePath(path, "en")}
+  ogType="article"
+  image={post.data.cover && !post.data.cover.endsWith(".svg") ? post.data.cover : "/og.png"}
+  publishedTime={post.data.date}
+  tags={post.data.tags}
+>
+  <article class="post" id="contenido">
+    <header class="post-hero">
+      {
+        post.data.cover && (
+          <div class="post-cover">
+            <img src={post.data.cover} alt={`${t(locale, "coverOf")} ${post.data.title}`} width="960" height="540" />
+          </div>
+        )
+      }
+      {post.data.draft && <span class="badge">{t(locale, "draft")}</span>}
+      <h1>{post.data.title}</h1>
+      <p class="page-desc">{post.data.description}</p>
+      <p class="meta">
+        <time datetime={post.data.date.toISOString()}>
+          {t(locale, "publishedOn")} {formatDate(post.data.date, locale)}
+        </time>
+        <span>{minutes} {t(locale, "readingTime")}</span>
+      </p>
+      {
+        post.data.tags.length > 0 && (
+          <p class="tags">
+            {post.data.tags.map((tag) => (
+              <a class="tag" href={tagPath(locale, slugifyTag(tag))}>
+                {tag}
+              </a>
+            ))}
+          </p>
+        )
+      }
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+    {
+      related.length > 0 && (
+        <aside class="related" aria-labelledby="related-title">
+          <h2 id="related-title">{t(locale, "related")}</h2>
+          <div class="feed">
+            {related.map((item) => (
+              <PostCard locale={locale} post={item} />
+            ))}
+          </div>
+        </aside>
+      )
+    }
+  </article>
+</Layout>

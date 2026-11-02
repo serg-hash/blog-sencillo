@@ -1,0 +1,62 @@
+---
+import { site, localize, type Locale } from "../config";
+import { t } from "../i18n";
+import { iconSvg, networkLabels } from "../icons";
+import { tagsIndexPath, rssPath } from "../lib/paths";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+function isExternal(url: string) {
+  return /^https?:\/\//i.test(url);
+}
+---
+
+<footer class="footer">
+  <div class="footer-row">
+    <p>
+      {t(locale, "authoredBy")}
+      {" "}
+      <a href={site.author.url} rel="author">{site.author.name}</a>
+      {site.author.handle && <span> · {site.author.handle}</span>}
+    </p>
+    {
+      site.socials.length > 0 && (
+        <nav class="socials" aria-label={t(locale, "socials")}>
+          {site.socials.map((social) => {
+            const label = social.label
+              ? localize(social.label, locale)
+              : networkLabels[social.network] || social.network;
+            const svg = iconSvg(social.network) || iconSvg("web");
+            return (
+              <a
+                class="social"
+                href={social.url}
+                target={isExternal(social.url) ? "_blank" : undefined}
+                rel={isExternal(social.url) ? "noopener noreferrer" : undefined}
+                aria-label={label}
+                title={label}
+              >
+                {svg && <Fragment set:html={svg} />}
+              </a>
+            );
+          })}
+        </nav>
+      )
+    }
+  </div>
+  <p>
+    <a href={tagsIndexPath(locale)}>{t(locale, "allTags")}</a>
+    {" · "}
+    <a href={rssPath()}>{t(locale, "rss")}</a>
+  </p>
+  <p>{t(locale, "footer")}</p>
+  <p>
+    {t(locale, "builtWith")}
+    {" "}
+    <a href="https://github.com/serg-hash/blog-sencillo">blog-sencillo</a>
+  </p>
+</footer>

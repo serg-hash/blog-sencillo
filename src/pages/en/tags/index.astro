@@ -1,0 +1,36 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { localize, site, type Locale } from "../../../config";
+import { t } from "../../../i18n";
+import { getPublishedPosts, uniqueTags } from "../../../lib/posts";
+import { tagPath, tagsIndexPath, swapLocalePath } from "../../../lib/paths";
+
+const locale: Locale = "en";
+const tags = uniqueTags(await getPublishedPosts());
+const path = tagsIndexPath(locale);
+---
+
+<Layout
+  locale={locale}
+  title={`${t(locale, "allTags")} — ${site.name}`}
+  description={localize(site.description, locale)}
+  path={path}
+  alternatePath={swapLocalePath(path, "es")}
+>
+  <main id="contenido">
+    <section class="hero">
+      <p class="eyebrow">{site.name}</p>
+      <h1>{t(locale, "allTags")}</h1>
+      <p class="page-desc">{t(locale, "tagged")}</p>
+    </section>
+    <div class="tag-cloud">
+      {
+        tags.map(({ tag, slug, count }) => (
+          <a class="tag" href={tagPath(locale, slug)}>
+            {tag} · {count}
+          </a>
+        ))
+      }
+    </div>
+  </main>
+</Layout>

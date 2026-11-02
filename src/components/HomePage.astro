@@ -1,0 +1,75 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PostCard from "./PostCard.astro";
+import Pagination from "./Pagination.astro";
+import { localize, site, type Locale } from "../config";
+import { t } from "../i18n";
+import { pagePath, swapLocalePath } from "../lib/paths";
+import type { Post } from "../lib/posts";
+
+interface Props {
+  locale: Locale;
+  posts: Post[];
+  current: number;
+  lastPage: number;
+}
+
+const { locale, posts, current, lastPage } = Astro.props;
+const title =
+  current > 1
+    ? `${t(locale, "page")} ${current} — ${site.name}`
+    : localize(site.title, locale) || site.name;
+const description = localize(site.description, locale);
+const path = pagePath(locale, current);
+const featured = current === 1 ? posts[0] : undefined;
+const rest = current === 1 ? posts.slice(1) : posts;
+---
+
+<Layout
+  locale={locale}
+  title={title}
+  description={description}
+  path={path}
+  alternatePath={swapLocalePath(path, locale === "es" ? "en" : "es")}
+>
+  <main id="contenido">
+    {
+      current === 1 && (
+        <section class="hero">
+          <p class="eyebrow">{site.name}</p>
+          <h1>{localize(site.tagline, locale)}</h1>
+          <p class="lede">{description}</p>
+          <p class="byline">
+            <span>
+              {t(locale, "authoredBy")} {site.author.name}
+            </span>
+            {site.author.handle && <span>{site.author.handle}</span>}
+          </p>
+        </section>
+      )
+    }
+    {
+      current > 1 && (
+        <section class="hero">
+          <p class="eyebrow">{t(locale, "latestPosts")}</p>
+          <h1 class="page-title">
+            {t(locale, "page")} {current} {t(locale, "of")} {lastPage}
+          </h1>
+        </section>
+      )
+    }
+    {
+      posts.length === 0 ? (
+        <p class="empty">{t(locale, "empty")}</p>
+      ) : (
+        <section class="feed" aria-label={t(locale, "latestPosts")}>
+          {featured && <PostCard locale={locale} post={featured} featured />}
+          {rest.map((post) => (
+            <PostCard locale={locale} post={post} />
+          ))}
+        </section>
+      )
+    }
+    <Pagination locale={locale} current={current} lastPage={lastPage} />
+  </main>
+</Layout>

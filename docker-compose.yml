@@ -1,0 +1,21 @@
+# Despliegue en VPS (Hostinger Docker Manager u otro).
+# Por defecto publica el puerto 8080 del anfitrión → 80 del contenedor.
+# En producción, cambia a "80:80" o deja que el proxy inverso de Hostinger
+# apunte al puerto publicado.
+#
+#   docker compose up --build -d
+
+services:
+  web:
+    build: .
+    image: blog-sencillo:latest
+    container_name: blog-sencillo
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
