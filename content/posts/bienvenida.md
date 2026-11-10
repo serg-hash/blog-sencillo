@@ -32,4 +32,4 @@ El resto (`src/pages`, Docker, CI) solo te importa si quieres cambiar el diseño
 
 ## El siguiente paso
 
-Si acabas de clonar el repositorio, lee [Cómo escribir un artículo](/articulo/escribir-un-articulo) y luego [Cómo publicar el blog](/articulo/publicar-el-blog). Cambia `src/config.ts` por tus datos antes de subirlo a producción.
+Si acabas de clonar el repositorio, lee [Cómo escribir un artículo](escribir-un-articulo) y luego [Cómo publicar el blog](publicar-el-blog). Cambia `src/config.ts` por tus datos antes de subirlo a producción.

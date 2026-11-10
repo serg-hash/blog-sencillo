@@ -2,7 +2,7 @@
 import type { Locale } from "../config";
 import { t } from "../i18n";
 import { formatDate, slugifyTag } from "../lib/format";
-import { postPath, tagPath } from "../lib/paths";
+import { postPath, tagPath, withBase } from "../lib/paths";
 import { readingMinutes } from "../lib/reading-time";
 import type { Post } from "../lib/posts";
 
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const { locale, post, featured = false } = Astro.props;
-const href = postPath(locale, post.id);
+const href = withBase(postPath(locale, post.id));
 const minutes = readingMinutes(post.body);
 ---
 
@@ -21,7 +21,7 @@ const minutes = readingMinutes(post.body);
   {
     post.data.cover && (
       <a class="card-cover" href={href} tabindex="-1" aria-hidden="true">
-        <img src={post.data.cover} alt="" width="720" height="405" loading={featured ? "eager" : "lazy"} />
+        <img src={withBase(post.data.cover)} alt="" width="720" height="405" loading={featured ? "eager" : "lazy"} />
       </a>
     )
   }
@@ -40,7 +40,7 @@ const minutes = readingMinutes(post.body);
       post.data.tags.length > 0 && (
         <p class="tags">
           {post.data.tags.map((tag) => (
-            <a class="tag" href={tagPath(locale, slugifyTag(tag))}>
+            <a class="tag" href={withBase(tagPath(locale, slugifyTag(tag)))}>
               {tag}
             </a>
           ))}

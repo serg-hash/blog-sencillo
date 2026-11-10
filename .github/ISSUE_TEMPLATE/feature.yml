@@ -1,0 +1,39 @@
+name: Feature request / Mejora
+description: Suggest an enhancement that keeps the blog static and tracker-free
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        blog-sencillo stays a static Markdown blog: one file per post, no CMS, no analytics, no paid services.
+
+        Please read [CONTRIBUTING.md](https://github.com/serg-hash/blog-sencillo/blob/main/CONTRIBUTING.md) before proposing large new dependencies.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / Problema
+      description: What is hard or missing today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal / Propuesta
+      description: What would you add or change? Keep it static (`npm run build` → `dist/`).
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Docs / README
+        - UI copy (i18n)
+        - Accessibility
+        - SEO / RSS / sitemap
+        - Deploy (Pages, Hostinger, Docker)
+        - Styling
+        - Other
+    validations:
+      required: true

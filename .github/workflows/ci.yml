@@ -30,3 +30,22 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Build with GitHub Pages base path
+        env:
+          SITE_URL: https://serg-hash.github.io/blog-sencillo
+          BASE_PATH: /blog-sencillo
+        run: npm run build
+
+      - name: Verify base path in output
+        run: |
+          set -euo pipefail
+          grep -q 'href="/blog-sencillo/"' dist/index.html
+          grep -q 'href="/blog-sencillo/articulo/' dist/index.html
+          grep -q 'src="/blog-sencillo/' dist/index.html
+          if grep -RE 'href="/(articulo|etiqueta|en|covers)/' dist --include='*.html'; then
+            echo "Unprefixed root-relative href found in dist HTML" >&2
+            exit 1
+          fi
+          echo "Base path prefixes look correct."
+

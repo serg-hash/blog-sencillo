@@ -3,7 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import { localize, site, type Locale } from "../../config";
 import { t } from "../../i18n";
 import { getPublishedPosts, uniqueTags } from "../../lib/posts";
-import { tagPath, tagsIndexPath, swapLocalePath } from "../../lib/paths";
+import { tagPath, tagsIndexPath, swapLocalePath, withBase } from "../../lib/paths";
 
 const locale: Locale = "es";
 const tags = uniqueTags(await getPublishedPosts());
@@ -26,7 +26,7 @@ const path = tagsIndexPath(locale);
     <div class="tag-cloud">
       {
         tags.map(({ tag, slug, count }) => (
-          <a class="tag" href={tagPath(locale, slug)}>
+          <a class="tag" href={withBase(tagPath(locale, slug))}>
             {tag} · {count}
           </a>
         ))

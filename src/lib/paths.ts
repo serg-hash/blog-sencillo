@@ -1,5 +1,41 @@
 import type { Locale } from "../config";
 
+/**
+ * Join a site `base` (`/` or `/blog-sencillo`) with a root-relative path.
+ * Absolute, hash, mailto and already-prefixed URLs are left alone.
+ */
+export function joinBase(base: string, path: string): string {
+  if (
+    !path ||
+    /^(https?:\/\/|\/\/|mailto:|tel:|#)/i.test(path) ||
+    !path.startsWith("/")
+  ) {
+    return path;
+  }
+
+  const prefix =
+    !base || base === "/" ? "" : `/${base.replace(/^\/+|\/+$/g, "")}`;
+  if (!prefix) return path;
+  if (path === prefix || path.startsWith(`${prefix}/`)) return path;
+  return `${prefix}${path}`;
+}
+
+/** Prefix a root-relative path with Astro's `base` (needed on GitHub Pages). */
+export function withBase(path: string): string {
+  return joinBase(import.meta.env.BASE_URL || "/", path);
+}
+
+/** Strip Astro's `base` so locale routing can match `/articulo/...` etc. */
+export function stripBase(pathname: string): string {
+  const raw = pathname || "/";
+  const base = import.meta.env.BASE_URL || "/";
+  if (!base || base === "/") return raw;
+  const prefix = `/${base.replace(/^\/+|\/+$/g, "")}`;
+  if (raw === prefix || raw === `${prefix}/`) return "/";
+  if (raw.startsWith(`${prefix}/`)) return raw.slice(prefix.length) || "/";
+  return raw;
+}
+
 export function homePath(locale: Locale): string {
   return locale === "es" ? "/" : "/en/";
 }
@@ -40,7 +76,7 @@ const swaps: Array<{ from: RegExp; es: (m: RegExpMatchArray) => string; en: (m: 
 
 /** Equivalente de una ruta en el otro idioma de la UI. */
 export function swapLocalePath(pathname: string, target: Locale): string {
-  const path = pathname.replace(/\/+$/, "") || "/";
+  const path = stripBase(pathname).replace(/\/+$/, "") || "/";
   for (const rule of swaps) {
     const match = path.match(rule.from);
     if (match) return rule[target](match);
