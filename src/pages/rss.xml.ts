@@ -17,7 +17,8 @@ export async function GET(context: APIContext) {
       description: post.data.description,
       pubDate: post.data.date,
       categories: post.data.tags,
-      link: postPath("es", post.id),
+      // Absolute URL so a GitHub Pages subpath is not dropped by `new URL('/x', site)`.
+      link: `${siteUrl()}${postPath("es", post.id)}`,
     })),
   });
 }

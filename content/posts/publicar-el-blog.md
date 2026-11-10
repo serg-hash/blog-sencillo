@@ -23,6 +23,21 @@ npm run preview
 
 La vista previa sirve `dist/` en [http://localhost:4321](http://localhost:4321). Cualquier host estático (Nginx, Netlify, Cloudflare Pages, GitHub Pages) puede publicar esa carpeta.
 
+## GitHub Pages
+
+Este repositorio incluye `.github/workflows/pages.yml`. En cada push a `main` construye el sitio con:
+
+| Variable | Valor |
+| --- | --- |
+| `SITE_URL` | `https://TU_USUARIO.github.io/TU_REPO` |
+| `BASE_PATH` | `/TU_REPO` |
+
+Así los enlaces funcionan en la URL de proyecto (`/blog-sencillo/…`), no solo en la raíz del dominio.
+
+Activa Pages una vez: **Settings → Pages → Source: GitHub Actions**. La demo de este repo queda en [https://serg-hash.github.io/blog-sencillo/](https://serg-hash.github.io/blog-sencillo/).
+
+Si publicas en la raíz de un dominio (Hostinger, Netlify, un VPS), no definas `BASE_PATH`.
+
 ## Hostinger (Node.js / un clic)
 
 1. Pulsa **Deploy on Hostinger** en el README del repositorio, o crea un sitio Node.js en hPanel y apunta a este repo.

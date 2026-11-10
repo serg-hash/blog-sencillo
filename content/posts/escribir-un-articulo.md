@@ -7,7 +7,7 @@ cover: "/covers/escribir.png"
 draft: false
 ---
 
-Cada artículo es un archivo Markdown en la carpeta `content/posts`. El nombre del archivo, sin extensión, es la URL: `hola-mundo.md` se publica en `/articulo/hola-mundo`.
+Cada artículo es un archivo Markdown en la carpeta `content/posts`. El nombre del archivo, sin extensión, es la URL: `hola-mundo.md` se publica en `/articulo/hola-mundo` (y en `/en/post/hola-mundo`). Entre artículos, usa un enlace relativo al slug (`[otro](hola-mundo)`) para que funcione en español, en inglés y en GitHub Pages.
 
 ## Cabecera (frontmatter)
 
@@ -55,4 +55,4 @@ npm run dev
 
 Abre [http://localhost:4321](http://localhost:4321): el artículo nuevo aparece en la portada, en sus etiquetas, en el RSS y en el sitemap. No hace falta registrar nada más.
 
-Cuando quieras publicarlo de verdad, sigue [Cómo publicar el blog](/articulo/publicar-el-blog).
+Cuando quieras publicarlo de verdad, sigue [Cómo publicar el blog](publicar-el-blog).

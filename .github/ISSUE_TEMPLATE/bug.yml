@@ -1,0 +1,51 @@
+name: Bug report / Error
+description: Something does not work as expected / Algo no funciona como debería
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. A live demo of the sample site is at https://serg-hash.github.io/blog-sencillo/
+
+        Gracias por el reporte. La demo con los artículos de ejemplo está en https://serg-hash.github.io/blog-sencillo/
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened? / Qué ocurrió
+      description: What did you expect, and what happened instead?
+      placeholder: Expected the post list at /en/ to keep working after a build with BASE_PATH=/blog-sencillo…
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce / Pasos
+      description: Commands, URLs or files involved.
+      placeholder: |
+        npm ci
+        SITE_URL=https://example.github.io/blog-sencillo BASE_PATH=/blog-sencillo npm run build
+    validations:
+      required: true
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where / Dónde
+      options:
+        - Local (`npm run dev` / `npm run preview`)
+        - GitHub Pages
+        - Hostinger
+        - Docker / VPS
+        - Other static host
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node.js version
+      placeholder: "22.12"
+  - type: textarea
+    id: extra
+    attributes:
+      label: Extra context / Contexto
+      description: Screenshots, logs from `npm run check` or `npm run build`.

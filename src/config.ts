@@ -44,6 +44,11 @@ export const site = {
    * URL pública del blog, sin barra final.
    * Se usa en canonical, Open Graph, RSS y el sitemap.
    * Public URL of your blog, no trailing slash.
+   *
+   * En GitHub Pages el workflow define SITE_URL y BASE_PATH; no hace falta
+   * cambiar este valor para la demo. En Hostinger o un dominio propio,
+   * edita `url` y deja BASE_PATH sin definir (la raíz `/`).
+   * The Pages workflow overrides this with SITE_URL / BASE_PATH.
    */
   url: "https://example.com",
 
@@ -114,5 +119,7 @@ export function localize(value: I18nText, locale: Locale): string {
 }
 
 export function siteUrl(): string {
+  const fromAstro = import.meta.env.SITE;
+  if (fromAstro) return String(fromAstro).replace(/\/+$/, "");
   return site.url.replace(/\/+$/, "");
 }

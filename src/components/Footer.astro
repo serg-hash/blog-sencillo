@@ -2,7 +2,7 @@
 import { site, localize, type Locale } from "../config";
 import { t } from "../i18n";
 import { iconSvg, networkLabels } from "../icons";
-import { tagsIndexPath, rssPath } from "../lib/paths";
+import { tagsIndexPath, rssPath, withBase } from "../lib/paths";
 
 interface Props {
   locale: Locale;
@@ -49,9 +49,9 @@ function isExternal(url: string) {
     }
   </div>
   <p>
-    <a href={tagsIndexPath(locale)}>{t(locale, "allTags")}</a>
+    <a href={withBase(tagsIndexPath(locale))}>{t(locale, "allTags")}</a>
     {" · "}
-    <a href={rssPath()}>{t(locale, "rss")}</a>
+    <a href={withBase(rssPath())}>{t(locale, "rss")}</a>
   </p>
   <p>{t(locale, "footer")}</p>
   <p>

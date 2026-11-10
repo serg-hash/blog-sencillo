@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Live demo / Demo en vivo
+    url: https://serg-hash.github.io/blog-sencillo/
+    about: Try the sample blog before opening an issue. / Prueba la demo antes de abrir un issue.
+  - name: Discussions (GitHub)
+    url: https://github.com/serg-hash/blog-sencillo/blob/main/CONTRIBUTING.md
+    about: How to contribute / Cómo contribuir

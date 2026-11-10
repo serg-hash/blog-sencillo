@@ -2,7 +2,7 @@
 import { site, type Locale } from "../config";
 import { t } from "../i18n";
 import { iconSvg } from "../icons";
-import { homePath, tagsIndexPath, rssPath, swapLocalePath } from "../lib/paths";
+import { homePath, tagsIndexPath, rssPath, swapLocalePath, withBase, stripBase } from "../lib/paths";
 
 interface Props {
   locale: Locale;
@@ -10,13 +10,16 @@ interface Props {
 
 const { locale } = Astro.props;
 const other: Locale = locale === "es" ? "en" : "es";
-const otherHref = swapLocalePath(Astro.url.pathname, other);
-const tagsHref = tagsIndexPath(locale);
-const onTags = Astro.url.pathname.replace(/\/+$/, "").endsWith(locale === "es" ? "etiquetas" : "tags");
+const currentPath = withBase(stripBase(Astro.url.pathname));
+const otherHref = withBase(swapLocalePath(Astro.url.pathname, other));
+const homeHref = withBase(homePath(locale));
+const tagsHref = withBase(tagsIndexPath(locale));
+const rssHref = withBase(rssPath());
+const onTags = stripBase(Astro.url.pathname).replace(/\/+$/, "").endsWith(locale === "es" ? "etiquetas" : "tags");
 ---
 
 <header class="site-header">
-  <a class="brand" href={homePath(locale)}>
+  <a class="brand" href={homeHref}>
     <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
       <rect width="32" height="32" rx="8" fill="currentColor" opacity="0.15"></rect>
       <path d="M9 5h14v22l-7-4.2L9 27V5z" fill="currentColor"></path>
@@ -25,19 +28,19 @@ const onTags = Astro.url.pathname.replace(/\/+$/, "").endsWith(locale === "es" ?
   </a>
   <div class="header-tools">
     <nav class="nav-links" aria-label={t(locale, "posts")}>
-      <a href={homePath(locale)}>{t(locale, "home")}</a>
+      <a href={homeHref}>{t(locale, "home")}</a>
       <a href={tagsHref} aria-current={onTags ? "page" : undefined}>{t(locale, "tags")}</a>
     </nav>
-    <a class="icon-btn" href={rssPath()} aria-label={t(locale, "rss")} title={t(locale, "rss")}>
+    <a class="icon-btn" href={rssHref} aria-label={t(locale, "rss")} title={t(locale, "rss")}>
       <Fragment set:html={iconSvg("rss")} />
     </a>
     {
       site.showLanguageSwitch && (
         <nav class="lang" aria-label={t(locale, "lang")}>
-          <a href={locale === "es" ? Astro.url.pathname : otherHref} lang="es" aria-current={locale === "es" ? "page" : undefined}>
+          <a href={locale === "es" ? currentPath : otherHref} lang="es" aria-current={locale === "es" ? "page" : undefined}>
             ES
           </a>
-          <a href={locale === "en" ? Astro.url.pathname : otherHref} lang="en" aria-current={locale === "en" ? "page" : undefined}>
+          <a href={locale === "en" ? currentPath : otherHref} lang="en" aria-current={locale === "en" ? "page" : undefined}>
             EN
           </a>
         </nav>

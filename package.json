@@ -1,9 +1,9 @@
 {
   "name": "blog-sencillo",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "description": "Blog en Markdown autoalojado. Astro estático, un solo archivo de config, listo para Hostinger y Docker.",
+  "description": "Minimal Spanish-first Markdown blog template. Static Astro, bilingual UI, no JS framework required.",
   "type": "module",
   "engines": {
     "node": ">=22.12.0"
@@ -22,7 +22,10 @@
     "hostinger",
     "docker",
     "static-site",
-    "rss"
+    "rss",
+    "bilingual",
+    "spanish",
+    "blog-template"
   ],
   "repository": {
     "type": "git",
@@ -31,7 +34,7 @@
   "bugs": {
     "url": "https://github.com/serg-hash/blog-sencillo/issues"
   },
-  "homepage": "https://github.com/serg-hash/blog-sencillo#readme",
+  "homepage": "https://serg-hash.github.io/blog-sencillo/",
   "author": "Sergio Trujillo Muñoz (serg-hash)",
   "dependencies": {
     "@astrojs/rss": "^4.0.15",

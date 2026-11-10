@@ -5,7 +5,7 @@ import PostCard from "../../components/PostCard.astro";
 import { site, type Locale } from "../../config";
 import { t } from "../../i18n";
 import { formatDate, slugifyTag } from "../../lib/format";
-import { postPath, tagPath, swapLocalePath } from "../../lib/paths";
+import { postPath, tagPath, swapLocalePath, withBase } from "../../lib/paths";
 import { readingMinutes } from "../../lib/reading-time";
 import { getPublishedPosts, relatedPosts, type Post } from "../../lib/posts";
 
@@ -46,7 +46,7 @@ const path = postPath(locale, post.id);
       {
         post.data.cover && (
           <div class="post-cover">
-            <img src={post.data.cover} alt={`${t(locale, "coverOf")} ${post.data.title}`} width="960" height="540" />
+            <img src={withBase(post.data.cover)} alt={`${t(locale, "coverOf")} ${post.data.title}`} width="960" height="540" />
           </div>
         )
       }
@@ -63,7 +63,7 @@ const path = postPath(locale, post.id);
         post.data.tags.length > 0 && (
           <p class="tags">
             {post.data.tags.map((tag) => (
-              <a class="tag" href={tagPath(locale, slugifyTag(tag))}>
+              <a class="tag" href={withBase(tagPath(locale, slugifyTag(tag)))}>
                 {tag}
               </a>
             ))}
